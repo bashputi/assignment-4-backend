@@ -1,8 +1,11 @@
 import express, {NextFunction, Request, Response} from 'express';
+import { productRoutes } from './modules/products/product.route';
 const app = express()
 
 
 app.use(express.json());
+
+app.use("/api", productRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello Wrold')
