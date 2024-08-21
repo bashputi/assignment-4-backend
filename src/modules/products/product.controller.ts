@@ -84,9 +84,62 @@ const updateProduct = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
+const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {productId} = req.params;
+        const deletedProduct = await productService.deleteProduct(productId);
+     if (deletedProduct.deletedCount > 0) {
+        return res.json({
+            success: true,
+            message: "Product deleted successfully!",
+            data: null,
+        });
+     }else {
+        return res.json({
+            success: false,
+            message: "Product not found!",
+        });
+     }
+
+    } catch (error: any) {
+        next(error)
+    }
+};
+
+const getAllProducts = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { search = '', category = '', sortByPrice = 'asc', page = 1, limit = 8 } = req.query;
+
+        const result = await productService.getAllProducts(
+            search as string,
+            category as string,
+            sortByPrice as 'asc' | 'desc',
+            Number(page),
+            Number(limit)
+        );
+
+        if (result.products.length > 0) {
+            return res.json({
+                success: true,
+                message: "Product fetched successfully!",
+                data: result,
+            })
+        }else {
+            return res.json({
+                success: false,
+                message: "Product not found!",
+            });
+         }
+    } catch (error: any) {
+        next(error)
+    }
+};
+
 export const productControlller = {
     createProduct,
     getSpecificProduct,
     updateProduct,
-
+    deleteProduct,
+    getAllProducts,
+    
 }

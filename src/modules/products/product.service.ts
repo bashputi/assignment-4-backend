@@ -17,11 +17,51 @@ const updateProduct = async(id: string, updateData: object) => {
     return updateProduct;
 };
 
+const deleteProduct = async(id: string) => {
+    const deleteProduct = await Product.deleteOne({ _id: id });
+    return deleteProduct;
+};
+
+const getAllProducts = async(search: string, category: string, sortByPrice: 'asc' | 'desc' = 'asc', page: number = 1, limit: number = 10) => {
+   const query: any = {};
+
+    if(search) {
+        query.$or = [
+            { title: { $regex: search, $options: 'i'} },
+            { description: { $regex: search, $options: 'i'} }
+        ];
+    }
+
+    if(category) {
+        query.category = category;
+    }
+
+    const sortOption = sortByPrice === 'asc' ? 'price' : '-price';
+
+    const skip = (page -1) * limit;
+
+    const products = await Product.find(query)
+        .sort(sortOption)
+        .select('id title image price category')
+        .skip(skip)
+        .limit(limit);
+
+        const total = await Product.countDocuments(query);
+
+        return {
+            products,
+            total,
+            page,
+            pages: Math.ceil(total / limit),
+        };
+};
 
 
 export const productService = {
     createProduct,
     getProduct,
     updateProduct,
+    deleteProduct,
+    getAllProducts,
 
 }
