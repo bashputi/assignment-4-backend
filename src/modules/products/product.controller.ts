@@ -27,10 +27,10 @@ const createProduct = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-const getSpecificProduct = async (req: Request, res: Response, next: NextFunction) => {
+const getProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {productId} = req.params;
-        const result = await productService.getProduct(productId);
+        const { page = 1, limit = 8 } = req.query;
+        const result = await productService.getProducts();
      if (result) {
         return res.json({
             success: true,
@@ -137,7 +137,7 @@ const getAllProducts = async(req: Request, res: Response, next: NextFunction) =>
 
 export const productControlller = {
     createProduct,
-    getSpecificProduct,
+    getProducts,
     updateProduct,
     deleteProduct,
     getAllProducts,

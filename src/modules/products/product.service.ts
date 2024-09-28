@@ -6,9 +6,12 @@ const createProduct = async(payload: TProduct) => {
     return result;
 };
 
-const getProduct = async(id: string) => {
-    const result = await Product.findOne({ _id: id });
-    return result;
+const getProducts = async() => {
+    const products = await Product.find();
+
+    return {
+        products
+    };
 };
 
 const updateProduct = async(id: string, updateData: object) => {
@@ -59,7 +62,7 @@ const getAllProducts = async(search: string, category: string, sortByPrice: 'asc
 
 export const productService = {
     createProduct,
-    getProduct,
+    getProducts,
     updateProduct,
     deleteProduct,
     getAllProducts,

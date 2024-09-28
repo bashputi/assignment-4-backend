@@ -1,7 +1,10 @@
 import express, {NextFunction, Request, Response} from 'express';
 import { productRoutes } from './modules/products/product.route';
+import cors from 'cors';
+
 const app = express()
 
+app.use(cors());
 
 app.use(express.json());
 

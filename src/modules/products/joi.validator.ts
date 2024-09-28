@@ -6,7 +6,7 @@ export const productSchema = Joi.object({
     price: Joi.number().required(),
     category: Joi.string().required(),
     brand: Joi.string().required(),
-    stock: Joi.number().required(),
+    quantity: Joi.number().required(),
     rating: Joi.number().required(),
     description: Joi.string().required()
   })
@@ -17,7 +17,7 @@ export const updateProductSchema = Joi.object({
     price: Joi.number(),
     category: Joi.string(),
     brand: Joi.string(),
-    stock: Joi.number(),
+    quantity: Joi.number(),
     rating: Joi.number(),
     description: Joi.string()
   }).min(1);
